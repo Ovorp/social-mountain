@@ -71,12 +71,43 @@ class App extends Component {
       });
   }
 
+  filterPost = (text) => {
+    console.log(encodeURI(text));
+    if (!text) {
+      axios
+        .get(`https://practiceapi.devmountain.com/api/posts`)
+        .then((res) => {
+          this.setState({
+            posts: res.data,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      axios
+        .get(
+          `https://practiceapi.devmountain.com/api/posts/filter?text=${encodeURI(
+            text
+          )}`
+        )
+        .then((res) => {
+          this.setState({
+            posts: res.data,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   render() {
     const { posts } = this.state;
 
     return (
       <div className="App__parent">
-        <Header />
+        <Header searchFn={this.filterPost} />
 
         <section className="App__content">
           <Compose createPostFn={this.createPost} />

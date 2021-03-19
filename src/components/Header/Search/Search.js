@@ -10,14 +10,18 @@ export default class Search extends Component {
   render() {
     return (
       <section className="Search__parent">
-
         <div className="Search__content">
-          <input placeholder="Search Your Feed" />
+          <input
+            placeholder="Search Your Feed"
+            onChange={(e) => {
+              // this.handleTextUpdate(e);
+              this.props.searchFn(e.target.value);
+            }}
+          />
 
           <SearchIcon id="Search__icon" />
         </div>
-        
       </section>
-    )
+    );
   }
 }
