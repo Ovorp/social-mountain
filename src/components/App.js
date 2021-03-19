@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import axios from 'axios';
+import Post from './Post/Post';
 import './App.css';
 
 import Header from './Header/Header';
@@ -10,28 +11,64 @@ class App extends Component {
     super();
 
     this.state = {
-      posts: []
+      posts: [],
     };
 
-    this.updatePost = this.updatePost.bind( this );
-    this.deletePost = this.deletePost.bind( this );
-    this.createPost = this.createPost.bind( this );
+    this.updatePost = this.updatePost.bind(this);
+    this.deletePost = this.deletePost.bind(this);
+    this.createPost = this.createPost.bind(this);
   }
-  
+
   componentDidMount() {
-
+    axios
+      .get(`https://practiceapi.devmountain.com/api/posts`)
+      .then((res) => {
+        this.setState({
+          posts: res.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
-  updatePost() {
-  
+  updatePost(id, text) {
+    axios
+      .put(`https://practiceapi.devmountain.com/api/posts?id=${id}`, { text })
+      .then((res) => {
+        this.setState({
+          posts: res.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
-  deletePost() {
-
+  deletePost(id) {
+    axios
+      .delete(`https://practiceapi.devmountain.com/api/posts?id=${id}`)
+      .then((res) => {
+        this.setState({
+          posts: res.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
-  createPost() {
-
+  createPost(text) {
+    axios
+      .post(`https://practiceapi.devmountain.com/api/posts`, { text })
+      .then((res) => {
+        this.setState({
+          posts: res.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   render() {
@@ -42,9 +79,19 @@ class App extends Component {
         <Header />
 
         <section className="App__content">
-
-          <Compose />
-          
+          <Compose createPostFn={this.createPost} />
+          {posts.map((val) => {
+            return (
+              <Post
+                key={val.id}
+                text={val.text}
+                date={val.date}
+                updatePostFn={this.updatePost}
+                deletePostFn={this.deletePost}
+                id={val.id}
+              />
+            );
+          })}
         </section>
       </div>
     );
