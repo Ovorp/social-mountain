@@ -73,7 +73,6 @@ class App extends Component {
   }
 
   filterPost = (text) => {
-    console.log(encodeURI(text));
     if (!text) {
       axios
         .get(`https://practiceapi.devmountain.com/api/posts`)
