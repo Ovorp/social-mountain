@@ -23,6 +23,7 @@ class App extends Component {
     axios
       .get(`https://practiceapi.devmountain.com/api/posts`)
       .then((res) => {
+        console.log(res.data);
         this.setState({
           posts: res.data,
         });
